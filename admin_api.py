@@ -65,6 +65,22 @@ def update_user(service, userKey, user):
 
     return results
 
+def insert_user(service, user):
+
+    results = service.users().insert(
+        body=user,
+    ).execute()
+
+    return results
+
+def do_delete_user(service, userKey):
+
+    results = service.users().delete(
+        userKey=userKey
+    ).execute()
+
+    return results
+
 def change_password(email, password):
 
     service = get_service()
@@ -82,6 +98,24 @@ def change_password(email, password):
 
     print(results)
 
+def create_user(email, first, last, password):
+
+    service = get_service()
+
+    user = {
+        "primaryEmail": email,
+        "password": password,
+        "name": {
+            "givenName": first,
+            "familyName": last,
+        }
+        
+    }
+
+    results = insert_user(service, user)
+
+    print(results)
+
 def suspend_user(email):
 
     service = get_service()
@@ -96,6 +130,21 @@ def suspend_user(email):
     user["suspended"] = True
 
     results = update_user(service, userKey, user)
+
+    print(results)
+    
+def delete_user(email):
+
+    service = get_service()
+
+    # Call the Admin SDK Directory API
+    print('Search for user')
+
+    user = get_user(service, email)
+                              
+    userKey = user['id']
+
+    results = do_delete_user(service, userKey)
 
     print(results)
     
