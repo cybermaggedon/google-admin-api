@@ -7,7 +7,10 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/admin.directory.user']
+SCOPES = [
+    'https://www.googleapis.com/auth/admin.directory.user',
+    'https://www.googleapis.com/auth/admin.directory.group'
+]
 
 def get_service():
 
@@ -162,6 +165,39 @@ def unsuspend_user(email):
     user["suspended"] = False
 
     results = update_user(service, userKey, user)
+
+    print(results)
+
+def is_member(email, group):
+
+    service = get_service()
+
+    results = service.members().get(
+        memberKey=email,
+        groupKey=group
+    ).execute()
+
+    print(results)
+
+def add_member(email, group):
+
+    service = get_service()
+
+    results = service.members().insert(
+        memberKey=email,
+        groupKey=group
+    ).execute()
+
+    print(results)
+
+def delete_member(email, group):
+
+    service = get_service()
+
+    results = service.members().delete(
+        memberKey=email,
+        groupKey=group
+    ).execute()
 
     print(results)
 

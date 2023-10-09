@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+
+import sys
+from admin_api import *
+
+if len(sys.argv) != 3:
+    print("Usage: is-member <email> <group>")
+    sys.exit(1)
+
+is_member(sys.argv[1], sys.argv[2])
+
+
+
