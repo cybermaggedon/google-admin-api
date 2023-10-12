@@ -140,9 +140,6 @@ def delete_user(email):
 
     service = get_service()
 
-    # Call the Admin SDK Directory API
-    print('Search for user')
-
     user = get_user(service, email)
                               
     userKey = user['id']
@@ -184,8 +181,11 @@ def add_member(email, group):
     service = get_service()
 
     results = service.members().insert(
-        memberKey=email,
-        groupKey=group
+        groupKey=group,
+        body={
+            "role": "MEMBER",
+            "email": email,
+        }
     ).execute()
 
     print(results)
@@ -200,4 +200,21 @@ def delete_member(email, group):
     ).execute()
 
     print(results)
+
+def list_users():
+
+    service = get_service()
+
+    results = service.users().list(
+        customer='my_customer',
+        maxResults=200,
+    ).execute()
+
+    users = results.get('users', [])
+
+    if not users:
+        raise RuntimeError('No such user in the domain.')
+
+    for user in users:
+        print(user["primaryEmail"])
 

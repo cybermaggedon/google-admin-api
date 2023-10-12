@@ -1,0 +1,16 @@
+#!/bin/bash
+
+for i in $(seq 1 10)
+do
+
+  num=$(printf %02d $i)
+  user=user${num}
+  password=here-is-test-thing-${num}
+
+  echo ${user} ${password}
+
+  ./create-user ${user}@org User ${num} ${password}
+  ./add-member  ${user}@org workshop@org
+
+done
+

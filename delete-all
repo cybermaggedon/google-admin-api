@@ -1,0 +1,12 @@
+#!/bin/bash
+
+for i in $(seq 38 41)
+do
+
+  num=$(printf %02d $i)
+  user=user${num}
+
+  ./delete-user ${user}@org
+
+done
+
